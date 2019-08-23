@@ -1,0 +1,10 @@
+*.iobj
+*.ipdb
+*.pdb
+**/.vs
+*.xlsx
+*.tlog
+*.log
+*.obj
+**/Release
+*.vcxproj.user
