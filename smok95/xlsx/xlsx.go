@@ -19,6 +19,7 @@ type Options struct {
 	Outfile       string // 출력파일명
 	FontName      string // 폰트명
 	FontSize      int    // 폰트크기
+	Delimiter     string // 구분기호
 }
 
 // ConvertFromCSV csv데이터 xlsx파일로 변환
@@ -45,7 +46,18 @@ func ConvertFromCSV(text string, opt Options) int {
 
 	_ = sheet
 
-	delimiter := "\t"
+	delimiter := ","
+	delimLen := len(opt.Delimiter)
+	if delimLen > 0 {
+		if delimLen > 1 {
+			switch opt.Delimiter {
+			case "\\t", "tab":
+				delimiter = "\t"
+			}
+		} else {
+			delimiter = opt.Delimiter
+		}
+	}
 
 	if !opt.SkipEmptyLine {
 		text = emptyLine2emptyColumn(text)

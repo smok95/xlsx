@@ -19,6 +19,7 @@ func initFlag(opt *xl.Options) {
 	flag.StringVar(&opt.SheetName, "sheet-name", "Sheet1", "시트명")
 	flag.StringVar(&opt.FontName, "font-name", "맑은 고딕", "Default font name")
 	flag.IntVar(&opt.FontSize, "font-size", 11, "Default font size")
+	flag.StringVar(&opt.Delimiter, "delimiter", ",", "csv 구분기호")
 }
 
 func main() {

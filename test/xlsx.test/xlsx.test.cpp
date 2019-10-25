@@ -38,7 +38,7 @@ void test() {
 
 		fnCsv2xlsx text2xlsx = (fnCsv2xlsx)GetProcAddress(hDll, "csv2xlsx");
 		if (text2xlsx) {
-			std::string sUtf8 = mbstr2utf8("-out=ansi.sample.xlsx");
+			std::string sUtf8 = mbstr2utf8("-out=ansi.sample.xlsx\n-delimiter=\\t\n-sheet-name=ansi sample");
 			std::string sText = mbstr2utf8(sSrc.c_str());
 			result = text2xlsx(sText.c_str(), sUtf8.c_str());
 		}
@@ -56,9 +56,6 @@ void test() {
 
 int main()
 {
-	for (int i = 0; i < 10; i++) {
-		test();
-	}
-
+	test();
 	return 0;
 }
