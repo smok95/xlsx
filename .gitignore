@@ -8,3 +8,5 @@
 *.obj
 **/Release
 *.vcxproj.user
+**/Debug
+*.ilk
