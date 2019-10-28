@@ -45,7 +45,8 @@ void test() {
 		else
 			puts("Failed to GetProcAddress('csv2xlsx')");
 
-		FreeLibrary(hDll);
+		//do not call FreeLibrary function. 
+		// FreeLibrary(hDll);
 	}
 	else {
 		puts("Failed to LoadLibrary('xlsx.dll')");
@@ -56,6 +57,8 @@ void test() {
 
 int main()
 {
-	test();
+	int count = 2;
+	for(int i=0; i<count; i++)
+		test();
 	return 0;
 }
