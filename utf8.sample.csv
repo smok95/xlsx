@@ -2,7 +2,7 @@
 
 
 
-컬럼테스트 (총 5개의 컬럼이 표시되면 정상)
+컬럼테스트	(총 5개의 컬럼이 표시되면 정상)
 컬럼1	컬럼2	컬럼3	컬럼4	컬럼5
 value1	value2	value3	value4	value5
 value1	value2	value3	value4	value5
@@ -27,6 +27,14 @@ value1	value2	value3	value4	value5
 200원	+123,456,789
 2,000원	-1,234,567,890,123
 12월	12345678901234567890
+
+text	expected		
+=SUM(1+9)	="10"		=EXACT(TEXT(INDIRECT(ADDRESS(ROW(),1)),"0"), "10")
+001-01-000001	="001-01-000001"		=EXACT(INDIRECT(ADDRESS(ROW(),1)), "001-01-000001")
+2019-0012	="2019-0012"		=EXACT(INDIRECT(ADDRESS(ROW(),1)), "2019-0012")
+99-012-31	="99-012-31"		=EXACT(INDIRECT(ADDRESS(ROW(),1)), "99-012-31")
+009-09	="009-09"		=EXACT(INDIRECT(ADDRESS(ROW(),1)), "009-09")
+12-031	="12-031"		=EXACT(INDIRECT(ADDRESS(ROW(),1)), "12-031")
 
 +
 -
@@ -56,20 +64,20 @@ value1	value2	value3	value4	value5
 24:00	'24:00:00
 
 
-날짜
-10-12-31	'2010-12-31
-20-12-31	'2020-12-31
-30-12-31	'1930-12-31
-40-12-31	'1940-12-31
-50-12-31	'1950-12-31
-60-12-31	'1960-12-31
-70-12-31	'1970-12-31
-80-12-31	'1980-12-31
-90-12-31	'1990-12-31
-00-12-31	'2000-12-31
-12/12	'12월 12일
-31/12	'12월 31일
-19-7/18	'2019-07-18
+날짜	expected		csv값과 엑셀화면상에 표시되는 형식이 일치하는지 확인
+10-12-31	="2010-12-31"		=EXACT(TEXT(INDIRECT(ADDRESS(ROW(),1)),"yyyy-mm-dd"), "2010-12-31")
+20-12-31	="2020-12-31"		=EXACT(TEXT(INDIRECT(ADDRESS(ROW(),1)),"yyyy-mm-dd"), "2020-12-31")
+30-12-31	="1930-12-31"		=EXACT(TEXT(INDIRECT(ADDRESS(ROW(),1)),"yyyy-mm-dd"), "1930-12-31")
+40-12-31	="1940-12-31"		=EXACT(TEXT(INDIRECT(ADDRESS(ROW(),1)),"yyyy-mm-dd"), "1940-12-31")
+50-12-31	="1950-12-31"		=EXACT(TEXT(INDIRECT(ADDRESS(ROW(),1)),"yyyy-mm-dd"), "1950-12-31")
+60-12-31	="1960-12-31"		=EXACT(TEXT(INDIRECT(ADDRESS(ROW(),1)),"yyyy-mm-dd"), "1960-12-31")
+70-12-31	="1970-12-31"		=EXACT(TEXT(INDIRECT(ADDRESS(ROW(),1)),"yyyy-mm-dd"), "1970-12-31")
+80-12-31	="1980-12-31"		=EXACT(TEXT(INDIRECT(ADDRESS(ROW(),1)),"yyyy-mm-dd"), "1980-12-31")
+90-12-31	="1990-12-31"		=EXACT(TEXT(INDIRECT(ADDRESS(ROW(),1)),"yyyy-mm-dd"), "1990-12-31")
+00-12-31	="2000-12-31"		=EXACT(TEXT(INDIRECT(ADDRESS(ROW(),1)),"yyyy-mm-dd"), "2000-12-31")
+12/12	="12월 12일"		=EXACT(TEXT(INDIRECT(ADDRESS(ROW(),1)),"yyyy-mm-dd"), "12월 12일")
+31/12	="12월 31일"		=EXACT(TEXT(INDIRECT(ADDRESS(ROW(),1)),"yyyy-mm-dd"), "12월 31일")
+19-7/18	="2019-07-18"		=EXACT(TEXT(INDIRECT(ADDRESS(ROW(),1)),"yyyy-mm-dd"), "2019-07-18")
 
 
 날짜시간
@@ -89,4 +97,3 @@ value1	value2	value3	value4	value5
 
 잘못된숫자형식
 1,0,000	00.1,234	1,234,
-

@@ -12,6 +12,10 @@ import (
 	"strings"
 )
 
+var (
+	version string = "0.1.0"
+)
+
 // Parse 실행인자 해석
 func initFlag(f *flag.FlagSet, opt *xl.Options) {
 
@@ -26,10 +30,17 @@ func initFlag(f *flag.FlagSet, opt *xl.Options) {
 func main() {
 	var opt xl.Options
 	var csvFile string
+	var showVersion bool
 	flag.StringVar(&csvFile, "in", "", "Path to the csv input file.")
-	initFlag(flag.CommandLine, &opt)
+	flag.BoolVar(&showVersion, "version", false, "print xlsx version")
 
+	initFlag(flag.CommandLine, &opt)
 	flag.Parse()
+
+	if showVersion {
+		fmt.Println(version)
+		return
+	}
 
 	buf, err := ioutil.ReadFile(csvFile)
 	var csv string
@@ -60,8 +71,10 @@ go env 로 아래와 같이 설정되어 있는지확인
 set GOARCH=386
 set CGO_ENABLED=1
 // 빌드 방법
+	- Reduce complied file size
+		-ldflags "-s -w"
 	* dll
-		go build -buildmode=c-shared -o xlsx.dll main.go
+		go build -ldflags "-s -w" -buildmode=c-shared -o xlsx.dll main.go
 	* exe
-		go build -o xlsx.exe main.go
+		go build -ldflags "-s -w" -o xlsx.exe main.go
 */

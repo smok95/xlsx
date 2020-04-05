@@ -70,6 +70,7 @@ func ConvertFromCSV(text string, opt Options) int {
 
 	r := csv.NewReader(strings.NewReader(text))
 	r.Comma = rune(delimiter[0])
+	r.LazyQuotes = true
 
 	// 레코드별 필드갯수 체크기능 사용안함.
 	r.FieldsPerRecord = -1
@@ -90,11 +91,15 @@ func ConvertFromCSV(text string, opt Options) int {
 		for _, field := range fields {
 			cell := row.AddCell()
 			setCellValue(cell, field)
-			//cell.Value = field
 		}
 	}
 
-	xlsxFile.Save(opt.Outfile)
+	err = xlsxFile.Save(opt.Outfile)
+
+	if err != nil {
+		fmt.Println("Failed to save file : ", err)
+		return -1
+	}
 	return 0
 }
 
@@ -378,7 +383,7 @@ func isValidMonthDay(month int, day int) bool {
 	return month > 0 && month <= 12 && day > 0 && day <= 31
 }
 
-// 문자열에서 날짜(시간제외)값으로 변환
+// parseDate 문자열에서 날짜(시간제외)값으로 변환
 func parseDate(v string) (time.Time, bool) {
 	y, m, d := -1, 0, 0
 	var ret time.Time
@@ -407,15 +412,35 @@ func parseDate(v string) (time.Time, bool) {
 		if err != nil {
 			return ret, false
 		}
+
+		// 엑셀에서 확인한 결과
+		// 년은 0~9999값까지 유효
+		if y < 0 || y > 9999 {
+			return ret, false
+		}
+
+		// 유효범위 숫자라도 문자열길이가 3자리 또는 5자리 이상인 경우 년도로 인식안함. (엑셀확인)
+		slen := len(arr[iYear])
+		if slen == 3 || slen > 4 {
+			return ret, false
+		}
 	}
 
-	// 월
+	// 월 (문자열 2자리 이하의 숫자)
+	if len(arr[iMon]) > 2 {
+		return ret, false
+	}
+
 	m, err = strconv.Atoi(arr[iMon])
 	if err != nil {
 		return ret, false
 	}
 
-	// 일
+	// 일 (문자열 2자리 이하의 숫자)
+	if len(arr[iDay]) > 2 {
+		return ret, false
+	}
+
 	d, err = strconv.Atoi(arr[iDay])
 	if err != nil {
 		return ret, false
@@ -424,12 +449,6 @@ func parseDate(v string) (time.Time, bool) {
 	// 연도가 없으면 올해로 설정
 	if iYear == -1 {
 		y = time.Now().Year()
-	}
-
-	// 엑셀에서 확인한 결과
-	// 년은 0~9999값까지 유효
-	if y < 0 || y > 9999 {
-		return ret, false
 	}
 
 	if !isValidMonthDay(m, d) {
@@ -463,7 +482,7 @@ func parseDate(v string) (time.Time, bool) {
 // return
 // 	문자열이 날짜시간이면 true
 
-// 문자열값을 날짜(시간)값으로 셀에 지정
+// setDateTimeCellValue 문자열값을 날짜(시간)값으로 셀에 지정
 // return : 문자열값이 날짜타입이 맞으면 true, 아니면 false
 func setDateTimeCellValue(cell *xlsx.Cell, v string) bool {
 	var dt time.Time
@@ -538,12 +557,18 @@ func setCellValue(cell *xlsx.Cell, v string) {
 	// 좌우 공백제거
 	temp := strings.TrimSpace(v)
 
+	// 첫 문자가 '='(equal sign)이며 최소 2글자 이상이면 공식(Formulas)으로 저장
+	if len(temp) > 1 && temp[0] == '=' {
+		cell.SetStringFormula(temp)
+		return
+	}
+
 	// 숫자면 숫자포맷에 맞춰 셀에 저장
 	if setNumberCellValue(cell, temp) {
 		return
 	}
 
-	// 날짜시간이면 해당 포맷에 맞춰 셀체 저장
+	// 날짜시간이면 해당 포맷에 맞춰 셀에 저장
 	if setDateTimeCellValue(cell, temp) {
 		return
 	}
