@@ -67,6 +67,7 @@ func csv2xlsx(pszText *C.char, pszOptions *C.char) C.long {
 }
 
 /*
+// 사용한 go version go1.14.1 windows/amd64
 go env 로 아래와 같이 설정되어 있는지확인
 set GOARCH=386
 set CGO_ENABLED=1
