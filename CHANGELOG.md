@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## 0.2.0 - 
+### Added
+- Cell text/background color 설정 기능 추가
+
 ## [0.1.0] - 2020-04-05
 ### Added
 - version 추가
@@ -15,4 +19,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - 날짜가 아닌 형식까지 날짜로 변환되는 현상 수정
 - 함수문자열 지원되도록 수정
 
-[0.1.0: https://github.com/smok95/xlsx
+[0.1.0: https://github.com/smok95/xlsx]

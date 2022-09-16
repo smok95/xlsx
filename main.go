@@ -3,7 +3,7 @@ package main
 import (
 	"C"
 
-	xl "./smok95/xlsx"
+	xl "github.com/smok95/xlsx/xlsx"
 )
 import (
 	"flag"
@@ -50,32 +50,24 @@ func main() {
 	}
 
 	csv = string(buf)
-	xl.ConvertFromCSV(csv, opt)
+	xl.ConvertFromCSV(csv, opt, "")
 }
 
 //export csv2xlsx
-func csv2xlsx(pszText *C.char, pszOptions *C.char) C.long {
+func csv2xlsx(pszCsv *C.char, pszOptions *C.char) C.long {
+	return csv2xlsx_with_style(pszCsv, pszOptions, nil)
+}
+
+//export csv2xlsx_with_style
+func csv2xlsx_with_style(pszCsv *C.char, pszOptions *C.char, pszStyles *C.char) C.long {
 	var opt xl.Options
-	text := C.GoString(pszText)
+	text := C.GoString(pszCsv)
 	cmdline := C.GoString(pszOptions)
+	styles := C.GoString(pszStyles)
 	fs := flag.NewFlagSet("csv2xlsxOptions", flag.ContinueOnError)
 	initFlag(fs, &opt)
 	args := strings.Split(cmdline, "\n")
 	fs.Parse(args)
-	ret := xl.ConvertFromCSV(text, opt)
+	ret := xl.ConvertFromCSV(text, opt, styles)
 	return C.long(ret)
 }
-
-/*
-// 사용한 go version go1.14.1 windows/amd64
-go env 로 아래와 같이 설정되어 있는지확인
-set GOARCH=386
-set CGO_ENABLED=1
-// 빌드 방법
-	- Reduce complied file size
-		-ldflags "-s -w"
-	* dll
-		go build -ldflags "-s -w" -buildmode=c-shared -o xlsx.dll main.go
-	* exe
-		go build -ldflags "-s -w" -o xlsx.exe main.go
-*/
