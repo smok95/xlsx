@@ -1,6 +1,6 @@
 set GOARCH=386
 set CGO_ENABLED=1
-set CC=mingw32-gcc
+set CC=gcc
 go build -ldflags "-s -w" -buildmode=c-shared -o xlsx.dll main.go
 go build -ldflags "-s -w" -o xlsx.exe main.go
 

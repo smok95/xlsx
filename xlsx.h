@@ -19,6 +19,11 @@ typedef struct { const char *p; ptrdiff_t n; } _GoString_;
 /* Start of preamble from import "C" comments.  */
 
 
+#line 3 "main.go"
+
+#include <stdlib.h>
+
+#line 1 "cgo-generated-wrapper"
 
 
 /* End of preamble from import "C" comments.  */
@@ -76,6 +81,18 @@ extern "C" {
 
 extern __declspec(dllexport) long int csv2xlsx(char* pszCsv, char* pszOptions);
 extern __declspec(dllexport) long int csv2xlsx_with_style(char* pszCsv, char* pszOptions, char* pszStyles);
+extern __declspec(dllexport) uintptr_t xlsx_load_file(char* path);
+extern __declspec(dllexport) void xlsx_close_file(uintptr_t handle);
+extern __declspec(dllexport) int xlsx_get_sheet_count(uintptr_t handle);
+extern __declspec(dllexport) char* xlsx_get_sheet_name(uintptr_t handle, int sheetIndex);
+extern __declspec(dllexport) int xlsx_get_row_count(uintptr_t handle, int sheetIndex);
+extern __declspec(dllexport) int xlsx_get_col_count(uintptr_t handle, int sheetIndex, int row);
+extern __declspec(dllexport) char* xlsx_get_cell_value(uintptr_t handle, int sheetIndex, int row, int col);
+extern __declspec(dllexport) void xlsx_free_string(char* str);
+extern __declspec(dllexport) uintptr_t xlsx_create_file();
+extern __declspec(dllexport) int xlsx_add_sheet(uintptr_t handle, char* sheetName);
+extern __declspec(dllexport) void xlsx_set_cell_value(uintptr_t handle, int sheetIndex, int row, int col, char* value);
+extern __declspec(dllexport) int xlsx_save_file(uintptr_t handle, char* filename);
 
 #ifdef __cplusplus
 }

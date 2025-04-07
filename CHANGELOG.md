@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## 0.3 - 2025-04-07
+### Added
+- xlsx 읽기/쓰기 기능 추가
+
 ## 0.2.0 - 
 ### Added
 - Cell text/background color 설정 기능 추가
